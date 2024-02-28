@@ -5,7 +5,7 @@ import { HStack, VStack, FlatList, Heading, Text } from "native-base";
 import { useState } from "react";
 
 const groupsMoc = [
-  "perna",
+  "Perna",
   "costa",
   "ombro",
   "peito",
@@ -38,7 +38,11 @@ export function Home() {
           keyExtractor={(group) => group}
           horizontal
           renderItem={({ item: group }) => (
-            <Group onPress={() => handleGroupSelected(group)} name={group} isActive={groupSelected === group} />
+            <Group
+              onPress={() => handleGroupSelected(group)}
+              name={group}
+              isActive={groupSelected.toLocaleLowerCase() === group.toLocaleLowerCase()}
+            />
           )}
           showsHorizontalScrollIndicator={false}
           _contentContainerStyle={{
@@ -50,7 +54,7 @@ export function Home() {
       </HStack>
 
       <VStack flex={1} px="8">
-        <HStack justifyContent={"space-between"}>
+        <HStack justifyContent={"space-between"} mb={5}>
           <Heading color={"gray.200"} fontSize={"md"}>
             Exercicios
           </Heading>
