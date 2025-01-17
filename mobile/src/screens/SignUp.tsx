@@ -12,6 +12,9 @@ import { useMemo } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { api } from "@services/api";
+import axios from "axios";
+import { Alert } from "react-native";
 
 type FormDataProps = {
   name: string;
@@ -45,24 +48,18 @@ export const SignUp = () => {
     navigation.goBack();
   };
 
-  async function handleSignUp(data: FormDataProps) {
+  async function handleSignUp({ name, email, password }: FormDataProps) {
     try {
-      await fetch("http://192.168.10.127:3333/users", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await api.post("/users", {
+        name, email, password,
       });
+
+      const data = await response.data
+
+      console.log(data);
     } catch (err) {
-      console.log(err);
-    } finally {
-      control._reset({
-        email: "",
-        name: "",
-        password: "",
-        password_confirm: "",
-      });
+      if (axios.isAxiosError(err))
+        Alert.alert(err.response?.data?.message);
     }
   }
 
